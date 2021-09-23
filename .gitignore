@@ -1,9 +1,25 @@
+# Eclipse  #
+###################
+
+*.launch
+.classpath
+.project
+.settings/
+target/
 bin/
-pkg/
-.DS_Store
-*.pyc
-*.swp
-*~
+test-output/
+maven-eclipse.xml
+.factorypath
+
+# Theia #
+##################
+.theia/
+
+# Idea #
+##################
+*.iml
+*.ipr
+*.iws
+.idea/
+
 .vscode/
-.vs/
-.idea
