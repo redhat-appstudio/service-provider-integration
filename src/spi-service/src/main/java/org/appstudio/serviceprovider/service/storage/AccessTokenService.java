@@ -1,15 +1,13 @@
 package org.appstudio.serviceprovider.service.storage;
 
-import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
-import org.jboss.logging.Logger;
-
-import javax.enterprise.context.ApplicationScoped;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import org.jboss.logging.Logger;
 
 @ApplicationScoped
 public class AccessTokenService {
@@ -18,7 +16,7 @@ public class AccessTokenService {
   private Map<String, AccessToken> tokens = Collections.synchronizedMap(new LinkedHashMap<>());
 
   public Set<AccessToken> fetchAll() {
-      LOG.info("fetchAll");
+    LOG.info("fetchAll");
     return new HashSet<>(tokens.values());
   }
 
@@ -33,7 +31,7 @@ public class AccessTokenService {
     return accessToken;
   }
 
-  public void update(String name,AccessToken accessTokenDto) {
+  public void update(String name, AccessToken accessTokenDto) {
     LOG.info(accessTokenDto);
     tokens.replace(name, accessTokenDto);
   }

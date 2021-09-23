@@ -1,11 +1,12 @@
 package org.appstudio.serviceprovider.service;
 
-import com.google.common.base.Strings;
-import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
-import org.appstudio.serviceprovider.service.dto.DtoConverter;
-import org.appstudio.serviceprovider.service.storage.AccessToken;
-import org.appstudio.serviceprovider.service.storage.AccessTokenService;
+import static org.appstudio.serviceprovider.service.dto.DtoConverter.asDto;
+import static org.appstudio.serviceprovider.service.dto.DtoConverter.asToken;
 
+import com.google.common.base.Strings;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -18,12 +19,10 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import static org.appstudio.serviceprovider.service.dto.DtoConverter.asDto;
-import static org.appstudio.serviceprovider.service.dto.DtoConverter.asToken;
+import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
+import org.appstudio.serviceprovider.service.dto.DtoConverter;
+import org.appstudio.serviceprovider.service.storage.AccessToken;
+import org.appstudio.serviceprovider.service.storage.AccessTokenService;
 
 @Path("token")
 public class AccessTokenResource {
@@ -70,7 +69,7 @@ public class AccessTokenResource {
           .entity("Token name is not matched path parameter")
           .build();
     }
-    accessTokenService.update(name,accessToken);
+    accessTokenService.update(name, accessToken);
     return Response.ok().entity(accessToken).build();
   }
 
@@ -78,6 +77,8 @@ public class AccessTokenResource {
   @Path("/{name}")
   public Response delete(@PathParam("name") String name) {
     accessTokenService.delete(name);
-    return Response.status(Response.Status.NO_CONTENT).entity("Token deleted successfully !!").build();
+    return Response.status(Response.Status.NO_CONTENT)
+        .entity("Token deleted successfully !!")
+        .build();
   }
 }

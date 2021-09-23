@@ -1,5 +1,13 @@
 package org.appstudio.serviceprovider.service;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.response.Response;
@@ -8,18 +16,6 @@ import io.restassured.specification.ResponseSpecification;
 import org.appstudio.serviceprovider.service.dto.AccessTokenDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.startsWith;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 @QuarkusTest
 public class AccessTokenResourceTest {
@@ -178,28 +174,27 @@ public class AccessTokenResourceTest {
 
   @Test
   public void test_validationErrors() throws Exception {
-      AccessTokenDto token = prepareAccessToken(NameGenerator.generate("accesstoken-", 3));
-      token.setName("-1");
+    AccessTokenDto token = prepareAccessToken(NameGenerator.generate("accesstoken-", 3));
+    token.setName("-1");
 
-      Response response =
-          postAccessTokenDto(token)
-              .then()
-              .log()
-              .all()
-              .assertThat()
-              .spec(prepareResponseSpec(400))
-              .and()
-              .body("parameterViolations[0].path", equalTo("create.arg0.name"))
-              .and()
-              .body(
-                  "parameterViolations[0].message",
-                  equalTo("must match \"[a-z0-9]([-a-z0-9]*[a-z0-9])?\""))
-              .and()
-              .log()
-              .all()
-              .extract()
-              .response();
-
+    Response response =
+        postAccessTokenDto(token)
+            .then()
+            .log()
+            .all()
+            .assertThat()
+            .spec(prepareResponseSpec(400))
+            .and()
+            .body("parameterViolations[0].path", equalTo("create.arg0.name"))
+            .and()
+            .body(
+                "parameterViolations[0].message",
+                equalTo("must match \"[a-z0-9]([-a-z0-9]*[a-z0-9])?\""))
+            .and()
+            .log()
+            .all()
+            .extract()
+            .response();
   }
   //
   //  @Test
@@ -243,7 +238,13 @@ public class AccessTokenResourceTest {
   }
 
   private Response postAccessTokenDto(AccessTokenDto accessTokenDto) throws Exception {
-    RequestSpecification request = given().log().all().contentType("application/json").header("Accept-Language", "en-US").body(accessTokenDto);
+    RequestSpecification request =
+        given()
+            .log()
+            .all()
+            .contentType("application/json")
+            .header("Accept-Language", "en-US")
+            .body(accessTokenDto);
 
     return request.post("api/v1/token");
   }

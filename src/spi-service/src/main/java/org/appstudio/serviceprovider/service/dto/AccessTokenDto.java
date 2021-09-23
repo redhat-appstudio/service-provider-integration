@@ -1,17 +1,17 @@
 package org.appstudio.serviceprovider.service.dto;
 
+import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.Objects;
 
 public class AccessTokenDto {
   @NotBlank(message = "token may not be blank")
   private String token;
+
   @Pattern(regexp = "[a-z0-9]([-a-z0-9]*[a-z0-9])?")
   private String name;
 
-  public AccessTokenDto() {
-  }
+  public AccessTokenDto() {}
 
   public AccessTokenDto(String token, String name) {
     this.token = token;
@@ -49,9 +49,6 @@ public class AccessTokenDto {
 
   @Override
   public String toString() {
-    return "AccessTokenDto{" +
-            "token='" + token + '\'' +
-            ", name='" + name + '\'' +
-            '}';
+    return "AccessTokenDto{" + "token='" + token + '\'' + ", name='" + name + '\'' + '}';
   }
 }
